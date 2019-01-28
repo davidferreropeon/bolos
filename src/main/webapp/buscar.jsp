@@ -1,5 +1,5 @@
 <%@ include file="../../includes/header.jsp"  %>
-<%@ include file="../../includes/navbar.jsp"  %>
+
 <%@ include file="../../includes/mensajes.jsp"  %>
 
     <main role="main" class="container">
