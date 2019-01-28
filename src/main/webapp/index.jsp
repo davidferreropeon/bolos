@@ -33,13 +33,13 @@
 			</section>
 
 	
-			<form action="bolo?=buscar" method="post">
+			<form action="bolo?op=buscar" method="post">
 			
 				<div class="form-group">
-				    <input type="number" name="id"  id="id" placeholder="id" readonly class="form-control">			    
+				    <input type="number" name="id"  id="id" placeholder="id" class="form-control">			    
 				</div>	
 				
-				<button type="submit" class="btn btn-primary btn-block">buscar por id</button>
+				<button type="submit" class="btn btn-primary btn-block">Buscar por ID</button>
 		</form>
 </main>
 </body>	

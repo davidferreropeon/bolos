@@ -54,7 +54,7 @@ public class BoloDAO {
 
 		Bolo bolo = null; // declaro la palabra
 // falta array list
-		String sql = "SELECT b.fecha , b.lugar, cw.foh, cw.monitores, cw.luces, b.id_crew,	c.nombre AS 'cliente', c.telefono AS 'telf_cliente',count(*) AS 'num_bolos' FROM bolo AS b, cliente AS c, crew AS cw WHERE b.id =? GROUP BY (b.lugar) ;"; // consulta
+		String sql = " SELECT id, fecha, lugar, banda1, banda2, banda3 FROM apr_producciones.bolo WHERE id =?;"; // consulta
 
 		try (Connection conn = ConnectionManager.getConnection(); // Establezco conexion
 				PreparedStatement pst = conn.prepareStatement(sql);) { // creo objeto statement
@@ -66,6 +66,8 @@ public class BoloDAO {
 
 				while (rs.next()) {
 					bolo = rowMapper(rs);
+					
+					
 
 				}
 			}

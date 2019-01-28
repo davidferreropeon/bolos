@@ -21,10 +21,11 @@ public class BoloController extends HttpServlet {
 
 	// variables parametros
 	
-	public String idp = "";
+	public String id = "";
 	public String op = "";
 
-	public Long id = null;
+	public Long idp = null;
+	public String redirect="a";
 
 	// dao y objetos
 	private BoloDAO boloDAO = null;
@@ -68,33 +69,34 @@ public class BoloController extends HttpServlet {
 		} catch (Exception e) {
 			request.setAttribute("mensaje", "error fatal en LOGICA ");
 		} finally {
-
-			request.getRequestDispatcher("listar.jsp").forward(request, response);
-
+			if (redirect.equals("a")) {
+				request.getRequestDispatcher("listar.jsp").forward(request, response);
+			}else  if (redirect.equals("b")) {
+			request.getRequestDispatcher("buscar.jsp").forward(request, response);
+			}
 		}
 
 	}// fin doproces
 
 	private void getParametros(HttpServletRequest request) {
 		// palabra parametros en un string
-		idp = request.getParameter("id");
+		id = request.getParameter("id");
 		op = request.getParameter("op");
-	
-
-	
-
 	}
 
 	private void listar(HttpServletRequest request) {
 	
 		request.setAttribute("bolos", boloDAO.getAll());
 		request.setAttribute("mensaje", "prueba mensaje");
+		redirect="a";
 
 	}
 	
 	private void buscar(HttpServletRequest request) {
-		bolo=boloDAO.getById(id);
+		Long idp = Long.parseLong(id);
+		bolo=boloDAO.getById(idp);
 		request.setAttribute("boloBuscar", bolo);
+		redirect="b";
 	}
 
 
