@@ -4,6 +4,10 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import org.apache.log4j.Logger;
 
 import com.ipartek.formacion.pojo.Bolo;
 
@@ -11,7 +15,13 @@ public class BoloDAO {
 
 	// dao
 	private static BoloDAO INSTANCE = null;
+	private final static Logger LOG = Logger.getLogger(BoloDAO.class);
 	private static final String SQL_GET_BY_ID = "{call bolo_getById(?)}";
+
+
+	private static final String SQL_GET_BY_ALL = "SELECT * FROM bolo ORDER BY id DESC LIMIT 100";
+
+	private static ArrayList bolos = null;
 
 	// metodo constructor superclase
 	private BoloDAO() {
@@ -22,14 +32,28 @@ public class BoloDAO {
 	public synchronized static BoloDAO getInstance() {
 		if (INSTANCE == null) {
 			INSTANCE = new BoloDAO();
+
 		}
 		return INSTANCE;
+	}
+
+	private Bolo rowMapper(ResultSet rs) throws SQLException {
+		Bolo bolo = new Bolo(); // creo la palabra para incluir los resultados de la consulta
+		bolo.setId(rs.getLong("id"));
+		bolo.setFecha(rs.getDate("fecha"));
+		bolo.setLugar(rs.getString("lugar"));
+		bolo.setBanda1(rs.getString("banda1"));
+		bolo.setBanda2(rs.getString("banda2"));
+		//bolo.setIdCrew(rs.getLong("idCrew"));
+		bolo.setBanda3(rs.getString("banda3"));
+		
+		return bolo;
 	}
 
 	public Bolo getById(Long id) {
 
 		Bolo bolo = null; // declaro la palabra
-
+// falta array list
 		String sql = "SELECT b.fecha , b.lugar, cw.foh, cw.monitores, cw.luces, b.id_crew,	c.nombre AS 'cliente', c.telefono AS 'telf_cliente',count(*) AS 'num_bolos' FROM bolo AS b, cliente AS c, crew AS cw WHERE b.id =? GROUP BY (b.lugar) ;"; // consulta
 
 		try (Connection conn = ConnectionManager.getConnection(); // Establezco conexion
@@ -41,14 +65,7 @@ public class BoloDAO {
 			try (ResultSet rs = pst.executeQuery()) { // ejecuto contulta
 
 				while (rs.next()) {
-					bolo = new Bolo(); // creo la palabra para incluir los resultados de la consulta
-					bolo.setId(rs.getLong("id"));
-					bolo.setFecha(rs.getDate("fecha"));
-					bolo.setLugar(rs.getString("lugar"));
-					bolo.setBanda1(rs.getString("banda1"));
-					bolo.setBanda2(rs.getString("banda2"));
-					bolo.setBanda3(rs.getString("banda3"));
-					bolo.setIdCrew(rs.getLong("idCrew"));
+					bolo = rowMapper(rs);
 
 				}
 			}
@@ -72,14 +89,8 @@ public class BoloDAO {
 			try (ResultSet rs = cs.executeQuery()) { // ejecuto contulta
 
 				while (rs.next()) {
-					bolo = new Bolo(); // creo la palabra para incluir los resultados de la consulta
-					bolo.setId(rs.getLong("id"));
-					bolo.setFecha(rs.getDate("fecha"));
-					bolo.setLugar(rs.getString("lugar"));
-					bolo.setBanda1(rs.getString("banda1"));
-					bolo.setBanda2(rs.getString("banda2"));
-					bolo.setBanda3(rs.getString("banda3"));
-					bolo.setIdCrew(rs.getLong("idCrew"));
+					bolo = rowMapper(rs);
+					
 
 				}
 			}
@@ -87,6 +98,25 @@ public class BoloDAO {
 			e.printStackTrace();
 		}
 		return bolo;
+	}
+
+	public ArrayList<Bolo> getAll() {
+
+		ArrayList<Bolo> bolos = new ArrayList<Bolo>();
+
+		try (Connection conn = ConnectionManager.getConnection();
+				PreparedStatement pst = conn.prepareStatement(SQL_GET_BY_ALL);
+				ResultSet rs = pst.executeQuery()) {
+
+			while (rs.next()) {
+
+				bolos.add(rowMapper(rs));
+			}
+
+		} catch (Exception e) {
+			LOG.error(e);
+		}
+		return bolos;
 	}
 
 }// fin multa dao

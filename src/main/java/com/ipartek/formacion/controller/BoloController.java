@@ -20,10 +20,11 @@ public class BoloController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	// variables parametros
-
-	public String id = "";
-	public String op = "";
 	
+	public String idp = "";
+	public String op = "";
+
+	public Long id = null;
 
 	// dao y objetos
 	private BoloDAO boloDAO = null;
@@ -59,7 +60,9 @@ public class BoloController extends HttpServlet {
 			case "listar":
 				listar(request);
 				break;
-
+			case "buscar":
+				buscar(request);
+				break;
 			}
 
 		} catch (Exception e) {
@@ -74,7 +77,7 @@ public class BoloController extends HttpServlet {
 
 	private void getParametros(HttpServletRequest request) {
 		// palabra parametros en un string
-		id = request.getParameter("id");
+		idp = request.getParameter("id");
 		op = request.getParameter("op");
 	
 
@@ -83,9 +86,16 @@ public class BoloController extends HttpServlet {
 	}
 
 	private void listar(HttpServletRequest request) {
-		int idParseo = Integer.parseInt(id);	
-		request.setAttribute("bolo", boloDAO.getById( (long)idParseo));
+	
+		request.setAttribute("bolos", boloDAO.getAll());
+		request.setAttribute("mensaje", "prueba mensaje");
 
 	}
+	
+	private void buscar(HttpServletRequest request) {
+		bolo=boloDAO.getById(id);
+		request.setAttribute("boloBuscar", bolo);
+	}
+
 
 }// fin

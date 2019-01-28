@@ -23,26 +23,24 @@
   
   </head>
 	
-	
+<!--  -->	
 <body>
 <main class="container">
 		
 			
 			<section>
-				<form  class="form-signin" action="bolo?op=listar" method="post" >
-				 	  
-				  	 	<div class="row "> 
-						   
-						   <input class="col-sm 4" type="number" id="fecha" name=fecha placeholder=" id"  class="form-control">
-					 	</div>
-					    <button class="btn btn-lg  btn-block mb-3 mt-3  btn-info" type="submit">
-							buscar bolo por id
-						</button>
-				</form>
+		<a href="bolo?op=listar" class=" btn btn-outline-primary btn-block">listar </a>
 			</section>
 
-		
-		
+	
+			<form action="bolo?=buscar" method="post">
+			
+				<div class="form-group">
+				    <input type="number" name="id"  id="id" placeholder="id" readonly class="form-control">			    
+				</div>	
+				
+				<button type="submit" class="btn btn-primary btn-block">buscar por id</button>
+		</form>
 </main>
 </body>	
 
