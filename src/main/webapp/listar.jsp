@@ -15,7 +15,7 @@
 		</c:if>	
 	
 		<a href="nuevo.jsp" class="btn btn-outline-primary mb-2">"Nuevo Bolo"</a>
-		<a href="nuevo.jsp" class="btn btn-outline-primary mb-2">"Modificar Bolo"</a>
+		<a href="modificar.jsp" class="btn btn-outline-primary mb-2">"Modificar Bolo"</a>
 		
 		<table class="table tablaOrdenable">
 		  <thead class="thead-dark">

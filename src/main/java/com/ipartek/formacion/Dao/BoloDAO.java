@@ -21,9 +21,10 @@ public class BoloDAO {
 	private static final String SQL_GET_BY_ID = "SELECT id, fecha, lugar, banda1, banda2, banda3 FROM apr_producciones.bolo WHERE id =?;";
 	private static final String SQL_GET_BY_ALL = "SELECT * FROM bolo ORDER BY id DESC LIMIT 100";
 	private static final String SQL_GET_BY_FECHA = "SELECT * FROM apr_producciones.bolo WHERE YEAR (fecha) =?;";
-	private static final String SQL_INSERTAR= "INSERT INTO `apr_producciones`.`bolo` (`lugar`, `banda1`, `banda2`, `banda3`, `id_crew`, `info`) VALUES (?,?,?,?,?);" ; 
+	private static final String SQL_INSERTAR= "INSERT INTO `apr_producciones`.`bolo` (`lugar`, `banda1`, `banda2`, `banda3`, `id_crew`, `info`) VALUES (?, ?, ?, ?, ?, ?);";
+	private static final String SQL_UPDATE= "UPDATE `apr_producciones`.`bolo` SET `id` = ?, `lugar` = ?, `banda1` = ?, `banda2` = ?, `banda3` = ?, ìd_crew =?, `info` = ? WHERE id` = ?;";  
 		
-	private static final String SQL_UPDATE= "";
+	
 
 	// array list
 	private static ArrayList bolos = null;
@@ -50,10 +51,11 @@ public class BoloDAO {
 		bolo.setLugar(rs.getString("lugar"));
 		bolo.setBanda1(rs.getString("banda1"));
 		bolo.setBanda2(rs.getString("banda2"));
-		
 		bolo.setBanda3(rs.getString("banda3"));
+		bolo.setIdCrew(rs.getLong("idCrew"));
 		
-		//bolo.setIdCrew(rs.getLong("idCrew"));
+		bolo.setInfo(rs.getString("info"));
+	
 
 		return bolo;
 	}
@@ -140,30 +142,31 @@ public class BoloDAO {
 	
 		try (Connection conn = ConnectionManager.getConnection(); 
 				PreparedStatement pst = conn.prepareStatement(SQL_INSERTAR, Statement.RETURN_GENERATED_KEYS );) {
+	
+					pst.setString(1, b.getLugar() );
+					pst.setString(2, b.getBanda1() );
+					pst.setString(3, b.getBanda2() );
+					pst.setString(4, b.getBanda3() );
+					pst.setLong(5, b.getIdCrew() );
+					pst.setString(6, b.getInfo() );
+					//pst.setLong(3, b.getNombre().getId() ); para dos tabalas distintas
+					
+					
+					int affectedRows = pst.executeUpdate();
+					if (affectedRows == 1) {
+						
+						ResultSet rs = pst.getGeneratedKeys();
+						if (rs.next()) {
+						    long id  = rs.getLong(1);
+						    b.setId(id);				    
+						}					
+						resul = true;//
+					}
 
-			pst.setString(1, b.getLugar() );
-			pst.setString(2, b.getBanda1() );
-			pst.setString(3, b.getBanda2() );
-			pst.setString(4, b.getBanda3() );
-			pst.setString(5, b.getInfo() );
-			//pst.setLong(3, b.getUsuario().getId() ); para dos tabalas distintas
-			
-			
-			int affectedRows = pst.executeUpdate();
-			if (affectedRows == 1) {
-				
-				ResultSet rs = pst.getGeneratedKeys();
-				if (rs.next()) {
-				    long id  = rs.getLong(1);
-				    b.setId(id);				    
-				}					
-				resul = true;
+				}
+				return resul;
+
 			}
-
-		}
-		return resul;
-
-	}
 	
 	public boolean update(Bolo b) throws SQLException {
 
@@ -171,11 +174,13 @@ public class BoloDAO {
 		try (Connection conn = ConnectionManager.getConnection();
 			 PreparedStatement pst = conn.prepareStatement(SQL_UPDATE);) {
 			
-			pst.setString(1, b.getLugar() );
-			pst.setString(2, b.getBanda1() );
-			pst.setString(3, b.getBanda2() );
-			pst.setString(4, b.getBanda3() );
-			pst.setString(5, b.getInfo() );
+			pst.setLong(1, b.getId() );
+			pst.setString(2, b.getLugar() );
+			pst.setString(3, b.getBanda1() );
+			pst.setString(4, b.getBanda2() );
+			pst.setString(5, b.getBanda3() );
+			pst.setLong(6, b.getIdCrew() );
+			pst.setString(7, b.getInfo() );
 			
 			
 			int affectedRows = pst.executeUpdate();

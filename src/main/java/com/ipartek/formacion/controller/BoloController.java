@@ -101,6 +101,8 @@ public class BoloController extends HttpServlet {
 			case "crear":
 				crear(request);
 				break;
+		
+			
 			
 			
 			}
@@ -179,7 +181,7 @@ public class BoloController extends HttpServlet {
 			Long idp = Long.parseLong(id);
 			Long idpCrew = Long.parseLong(idCrew);
 			
-			//b.setId( (long)identificador);
+			b.setId(idp);
 			b.setLugar(lugar);
 			b.setBanda1(banda1);
 			b.setBanda2(banda2);
@@ -230,6 +232,7 @@ public class BoloController extends HttpServlet {
 			}	
 			
 		}
+	
 	
 
 }// fin
