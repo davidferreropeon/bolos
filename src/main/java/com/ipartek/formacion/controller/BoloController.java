@@ -15,6 +15,8 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
+import org.apache.log4j.Logger;
+
 import com.ipartek.formacion.Dao.BoloDAO;
 import com.ipartek.formacion.pojo.Alerta;
 import com.ipartek.formacion.pojo.Bolo;
@@ -23,9 +25,15 @@ import com.ipartek.formacion.pojo.Bolo;
 public class BoloController extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
+	
+	// LOG
+	private final static Logger LOG = Logger.getLogger(BoloController.class);
+	
+
 	private ValidatorFactory factory;
 	private Validator validator;
-	private Alerta alerta1;
+
+
 
 	// variables parametros
 	
@@ -45,10 +53,11 @@ public class BoloController extends HttpServlet {
 	
 	public String redirect="a";
 	public String op = "";
-	public String alerta = "";
+	
 	// dao y objetos
 	private BoloDAO boloDAO = null;
 	Bolo bolo = null;
+	Alerta alerta = null;
 
 	// init para validator, dao , objetos y colecciones
 	@Override
@@ -57,6 +66,7 @@ public class BoloController extends HttpServlet {
 		super.init(config);
 		boloDAO = BoloDAO.getInstance();
 		bolo = new Bolo();
+		alerta = new Alerta();
 		factory  = Validation.buildDefaultValidatorFactory();
     	validator  = factory.getValidator();
 
@@ -96,10 +106,13 @@ public class BoloController extends HttpServlet {
 			}
 
 		} catch (Exception e) {
-			request.setAttribute("mensaje", "error fatal en LOGICA ");
+			LOG.debug("error catch logica");
+			request.setAttribute("mensaje", "Algo a salido mal ");
 		} finally {
 			if (redirect.equals("a")) {
+				
 				request.getRequestDispatcher("listar.jsp").forward(request, response);
+				
 			}else  if (redirect.equals("b")) {
 			request.getRequestDispatcher("buscar.jsp").forward(request, response);
 			}else  if (redirect.equals("c")) {
@@ -119,46 +132,59 @@ public class BoloController extends HttpServlet {
 		banda2 =request.getParameter("banda2");
 		banda3 =request.getParameter("banda3");
 		
-		//idCrew =request.getParameter("idCrew");
+		idCrew =request.getParameter("idCrew");
 		info =request.getParameter("info");
 		
 		op = request.getParameter("op");
 	}
 
 	private void listar(HttpServletRequest request) {
-	
+		request.setAttribute("alerta", alerta); 
 		request.setAttribute("bolos", boloDAO.getAll());
-		request.setAttribute("mensaje", "prueba mensaje");
+		request.setAttribute("mensaje", "Aqui tienes el listado de bolos realiados");
+		 alerta = new Alerta( Alerta.TIPO_SUCCESS, "LISTADO VERDE ");
+		
 		redirect="a";
 
 	}
 	
+	// buscar por id
 	private void buscar(HttpServletRequest request) {
 		Long idp = Long.parseLong(id);
 		bolo=boloDAO.getById(idp);
 		request.setAttribute("boloBuscar", bolo);
-		request.setAttribute("mensaje", "fecha y hora");
+		request.setAttribute("mensaje", "Resultados de tu busqueda");
+		 alerta = new Alerta( Alerta.TIPO_WARNING, "resultados de tu busqueda AMARILLO ");
+		 request.setAttribute("alerta", alerta); 
+
 		redirect="b";
 	}
 
+	// buscar por fecha
 	private void fecha(HttpServletRequest request) {
 		Long fechaparseo = Long.parseLong(fecha);
 		request.setAttribute("bolos", boloDAO.getByFecha(fechaparseo));
-		request.setAttribute("mensaje", "fecha y hora");
+		request.setAttribute("mensaje", ("bolos realizados en : " + fecha));
+		 alerta = new Alerta( Alerta.TIPO_PRIMARY, "bolos tipò AZUL");
+		 request.setAttribute("alerta", alerta); 
+	 
 		redirect="a";
 	}
 	
+	
+	// crear bolo
 	private void crear(HttpServletRequest request) {
 			//crear bolo mediante parametros del formulario para mandarlo a la bbdd
 			Bolo b = new Bolo();
 			Long idp = Long.parseLong(id);
+			Long idpCrew = Long.parseLong(idCrew);
 			
 			//b.setId( (long)identificador);
 			b.setLugar(lugar);
 			b.setBanda1(banda1);
 			b.setBanda2(banda2);
 			b.setBanda3(banda3);
-			//b.setIdCrew(idCrew);
+			b.setIdCrew(idpCrew);
 			b.setInfo(info);
 			
 			
@@ -168,7 +194,7 @@ public class BoloController extends HttpServlet {
 			
 			if ( violations.size() > 0 ) {              // validacion NO correcta
 			 
-			  alerta1 = new Alerta( Alerta.TIPO_WARNING, "Los campos introduciodos no son correctos, por favor intentalo de nuevo");		 
+			  alerta = new Alerta( Alerta.TIPO_WARNING, "Los campos introduciodos no son correctos, por favor intentalo de nuevo");		 
 			  redirect="c";
 			  // volver al formulario, cuidado que no se pierdan los valores en el form
 			  request.setAttribute("bolo", b);		  
@@ -178,15 +204,25 @@ public class BoloController extends HttpServlet {
 			
 				try {
 					if ( idp > 0 ) {
-						boloDAO.update(b);				
+						boloDAO.update(b);	
+						request.setAttribute("mensaje", " modificado con exito");
+						alerta = new Alerta( Alerta.TIPO_SUCCESS, "alerta vertde ACTUALIZADO con exito");
+						request.setAttribute("alerta", alerta); 
+				
 					}else {				
 						boloDAO.crear(b);
+						request.setAttribute("mensaje", " guardado con exito");
+						alerta = new Alerta( Alerta.TIPO_DANGER, "alerta ROJA CREADO  con exito");
+						request.setAttribute("alerta", alerta); 
+					
 					}
-					alerta1 = new Alerta( Alerta.TIPO_SUCCESS, "Registro guardado con exito");
+					
 					listar(request);
 					
 				}catch ( SQLException e) {
-					alerta1 = new Alerta( Alerta.TIPO_WARNING, "Lo sentimos pero el EMAIL ya existe");
+					alerta = new Alerta( Alerta.TIPO_WARNING, "Lo sentimos pero el bolo ya existe");
+					request.setAttribute("alerta", alerta); 
+					request.setAttribute("mensaje", "Mensaje ya existe");
 					redirect="a";
 					  request.setAttribute("bolo", b);	
 					//request.setAttribute("usuarios", daoUsuario.getAll() );

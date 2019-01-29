@@ -1,10 +1,17 @@
 <%@ include file="../../includes/header.jsp"  %>
 
-<%@ include file="../../includes/mensajes.jsp"  %>
+<%@ include file="../../includes/alerta.jsp"  %>
 
     <main role="main" class="container">
 	
-		
+		<c:if test = "${mensaje!=null}">	
+			<div class="alert alert-info alert-dismissible fade show" role="alert">
+		  		<strong> ${mensaje }</strong>
+			  	<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			   	 	<span aria-hidden="true">&times;</span>
+			  	</button>
+			</div>
+		</c:if>		
 		
 		<table class="table tablaOrdenable">
 		  <thead class="thead-dark">

@@ -1,10 +1,18 @@
 <%@ include file="../../includes/header.jsp"  %>
-<%@ include file="../../includes/mensajes.jsp"  %>
+<%@ include file="../../includes/alerta.jsp"  %>
 
 	
 <body>
 <main class="container">
-		
+	
+	<c:if test = "${mensaje!=null}">	
+			<div class="alert alert-info alert-dismissible fade show" role="alert">
+		  		<strong> ${mensaje }</strong>
+			  	<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			   	 	<span aria-hidden="true">&times;</span>
+			  	</button>
+			</div>
+		</c:if>			
 			
 			<section>
 		<a href="bolo?op=listar" class=" btn btn-outline-primary btn-block">listar </a>

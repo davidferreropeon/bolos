@@ -21,7 +21,7 @@ public class Bolo {
 		this.banda1 = "";
 		this.banda2 = "";
 		this.banda3 = "";
-		this.idCrew = -1L;
+		this.idCrew = 1L;
 		this.info = "";
 	}
 
