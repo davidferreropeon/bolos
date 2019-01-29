@@ -4,18 +4,18 @@
 
     <main role="main" class="container">
 	
-		<a href="" class="btn btn-outline-success mb-2">""</a>
+		<a href="nuevo.jsp" class="btn btn-outline-primary mb-2">"Nuevo Bolo"</a>
 		
 		<table class="table tablaOrdenable">
 		  <thead class="thead-dark">
-		    <tr>
+		   <tr>
 		      <th scope="col">id</th>
 		      <th scope="col">fecha</th>
 		      <th scope="col">lugar</th>
 		      <th scope="col">banda1</th>
 		      <th scope="col">banda2</th>
-		       <th scope="col">banda3</th>
-		        <th scope="col">${mensaje}</th>
+		      <th scope="col">banda3</th>		    
+		      <th scope="col">${mensaje}</th>
 		    </tr>
 		  </thead>
 		  <tbody>
@@ -27,7 +27,7 @@
 			      <th scope="row">${b.banda1}</th>
 			      <th scope="row">${b.banda2}</th>
 			      <th scope="row">${b.banda3}</th>
-			      <th scope="row">${b.idCrew}</th>
+			    
 			      <th scope="row">
 			      	<fmt:formatDate value="${b.fecha}" pattern="yyyy-MM-dd hh:mm:ss"/>
 			      </th>

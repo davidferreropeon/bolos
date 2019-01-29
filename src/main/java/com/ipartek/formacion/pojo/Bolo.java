@@ -10,6 +10,7 @@ public class Bolo {
 	private String banda2;
 	private String banda3;
 	private Long idCrew;
+	private String info;
 
 	public Bolo() {
 
@@ -21,8 +22,11 @@ public class Bolo {
 		this.banda2 = "";
 		this.banda3 = "";
 		this.idCrew = -1L;
+		this.info = "";
 	}
 
+	
+	// constructor con parametros
 	public Bolo(Long id, Date fecha, String lugar, String banda1, String banda2, String banda3, Long idCrew) {
 		this();
 		setId(id);
@@ -33,6 +37,28 @@ public class Bolo {
 		setBanda3(banda3);
 		setIdCrew(idCrew);
 
+	}
+	
+	// constructor con parametros mas parametro  informacion
+	public Bolo(Long id, Date fecha, String lugar, String banda1, String banda2, String banda3, Long idCrew, String info) {
+		this();
+		setId(id);
+		setFecha(fecha);
+		setLugar(lugar);
+		setBanda1(banda1);
+		setBanda2(banda2);
+		setBanda3(banda3);
+		setIdCrew(idCrew);
+		setInfo(info);
+
+	}
+
+	public String getInfo() {
+		return info;
+	}
+
+	public void setInfo(String info) {
+		this.info = info;
 	}
 
 	public Long getId() {
@@ -93,8 +119,9 @@ public class Bolo {
 
 	@Override
 	public String toString() {
-		return "Palabra [id=" + id + ", fecha=" + fecha + ", lugar=" + lugar + ", banda1=" + banda1 + ", banda2="
-				+ banda2 + ", banda3=" + banda3 + ", idCrew=" + idCrew + "]";
+		return "Bolo [id=" + id + ", fecha=" + fecha + ", lugar=" + lugar + ", banda1=" + banda1 + ", banda2=" + banda2
+				+ ", banda3=" + banda3 + ", idCrew=" + idCrew + ", info=" + info + "]";
 	}
 
+	
 }

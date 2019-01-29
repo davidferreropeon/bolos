@@ -25,8 +25,8 @@
 <body>
 
 <header>
-<nav class="navbar navbar-expand-md navbar-dark  bg-dark">
-	<a class="navbar-brand  mr-auto" href="${pageContext.request.contextPath}/index.jsp"><i class="fas fa-home fa-2x"></i></a>
+<nav class="navbar navbar-expand-md navbar-white bg-white">
+	<a class="mr-auto" href="${pageContext.request.contextPath}/index.jsp"><i class="bg-white fas fa-home fa-2x"></i></a>
 
 	
 	<ul class="navbar-nav float-right">
