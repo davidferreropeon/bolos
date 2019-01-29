@@ -1,15 +1,15 @@
 CREATE DATABASE  IF NOT EXISTS `apr_producciones` /*!40100 DEFAULT CHARACTER SET latin1 */;
 USE `apr_producciones`;
--- MySQL dump 10.13  Distrib 5.7.12, for Win32 (AMD64)
+-- MySQL dump 10.13  Distrib 8.0.12, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: apr_producciones
+-- Host: localhost    Database: apr_producciones
 -- ------------------------------------------------------
--- Server version	5.6.17
+-- Server version	8.0.12
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+ SET NAMES utf8 ;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -23,7 +23,7 @@ USE `apr_producciones`;
 
 DROP TABLE IF EXISTS `bolo`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `bolo` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `fecha` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -31,10 +31,11 @@ CREATE TABLE `bolo` (
   `banda1` varchar(145) DEFAULT NULL,
   `banda2` varchar(145) DEFAULT NULL,
   `banda3` varchar(145) DEFAULT NULL,
-  `id_crew` int(11) NOT NULL,
+  `id_crew` int(11) DEFAULT NULL,
+  `info` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_bolo_has_crew_idx` (`id_crew`),
-  CONSTRAINT `fk_bolo_has_crew` FOREIGN KEY (`id_crew`) REFERENCES `crew` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fk_bolo_has_crew` FOREIGN KEY (`id_crew`) REFERENCES `crew` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -44,7 +45,7 @@ CREATE TABLE `bolo` (
 
 LOCK TABLES `bolo` WRITE;
 /*!40000 ALTER TABLE `bolo` DISABLE KEYS */;
-INSERT INTO `bolo` VALUES (1,'2019-03-26 19:14:27','shake','sonora_kilombo',NULL,NULL,1),(2,'2018-02-26 20:50:34','zaldibar','sonora_kilombo',NULL,NULL,2),(3,'2017-08-26 20:50:34','azkena','moncada_20',NULL,NULL,3),(4,'2019-01-26 20:53:04','azkena','tokodera',NULL,NULL,1);
+INSERT INTO `bolo` VALUES (1,'2019-03-26 19:14:27','shake','sonora_kilombo',NULL,NULL,1,NULL),(2,'2018-02-26 20:50:34','zaldibar','sonora_kilombo',NULL,NULL,2,NULL),(3,'2017-08-26 20:50:34','azkena','moncada_20',NULL,NULL,3,NULL),(4,'2019-01-26 20:53:04','azkena','tokodera',NULL,NULL,1,NULL);
 /*!40000 ALTER TABLE `bolo` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -54,7 +55,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `cliente`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `cliente` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(45) NOT NULL,
@@ -63,7 +64,7 @@ CREATE TABLE `cliente` (
   `id_bolo` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_bolo_has_clien_idx` (`id_bolo`),
-  CONSTRAINT `fk_bolo_has_clien` FOREIGN KEY (`id_bolo`) REFERENCES `bolo` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fk_bolo_has_clien` FOREIGN KEY (`id_bolo`) REFERENCES `bolo` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -83,7 +84,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `crew`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `crew` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `foh` varchar(45) NOT NULL,
@@ -109,7 +110,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `tecnico`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `tecnico` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(45) NOT NULL,
@@ -118,7 +119,7 @@ CREATE TABLE `tecnico` (
   `id_crew` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_tecnico_has_crew_idx` (`id_crew`),
-  CONSTRAINT `fk_tecnico_has_crew` FOREIGN KEY (`id_crew`) REFERENCES `crew` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fk_tecnico_has_crew` FOREIGN KEY (`id_crew`) REFERENCES `crew` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -184,4 +185,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-01-27 22:23:30
+-- Dump completed on 2019-01-29 14:14:04
